@@ -3,44 +3,207 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>常用高数公式速查 | 极简高数</title>
+    <title>高数公式大全 | 考研数学必备速查表</title>
+    <meta name="description" content="最全的考研高等数学公式速查表，包含极限、导数、积分、泰勒公式展开、三角函数及考研易错点总结。免费在线查阅，同济高数完美伴侣。">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2929620643066807" crossorigin="anonymous"></script>
     <style>
-        body { background: #121212; color: #fff; font-family: sans-serif; padding: 20px; max-width: 800px; margin: 0 auto; }
-        h1 { border-bottom: 2px solid #1DB954; padding-bottom: 10px; }
-        .card { background: #181818; padding: 20px; margin-bottom: 20px; border-radius: 8px; border: 1px solid #333; }
-        h3 { color: #1DB954; margin-top: 0; }
-        code { background: #333; padding: 2px 5px; border-radius: 3px; font-family: monospace; }
-        a { color: #aaa; text-decoration: none; }
-        a:hover { color: #1DB954; }
+        :root {
+            --bg-color: #121212;
+            --card-color: #181818;
+            --card-hover: #222;
+            --text-main: #FFFFFF;
+            --text-sub: #B3B3B3;
+            --accent-color: #1DB954;
+            --border: #333;
+        }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1000px;
+            width: 100%;
+        }
+        header {
+            margin-bottom: 40px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 20px;
+        }
+        .back-link {
+            color: var(--text-sub);
+            text-decoration: none;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            margin-bottom: 15px;
+            transition: color 0.2s;
+        }
+        .back-link:hover { color: var(--accent-color); }
+        h1 { margin: 0 0 10px 0; color: var(--accent-color); }
+        .intro-text {
+            color: var(--text-sub);
+            font-size: 0.95em;
+            max-width: 800px;
+        }
+        .intro-text strong { color: #fff; font-weight: 600; }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+        .card {
+            background-color: var(--card-color);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            border-color: #444;
+        }
+        .card h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--accent-color);
+            font-size: 1.1em;
+            color: #fff;
+            display: inline-block;
+        }
+        .formula-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px dashed #333;
+            font-size: 0.9em;
+        }
+        .formula-row:last-child { border-bottom: none; }
+        .f-desc { color: var(--text-sub); }
+        .f-code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            color: var(--accent-color);
+            background: rgba(255,255,255,0.05);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        sup { font-size: 0.7em; vertical-align: super; }
+        footer {
+            margin-top: auto;
+            color: #555;
+            font-size: 12px;
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            width: 100%;
+        }
+        footer a { color: #666; text-decoration: none; }
     </style>
 </head>
 <body>
-    <a href="index.html">← 返回计算器</a>
-    <h1>考研高数必背公式</h1>
-    
-    <div class="card">
-        <h3>1. 基本积分公式</h3>
-        <p>∫ x^n dx = <code>x^(n+1)/(n+1) + C</code> (n≠-1)</p>
-        <p>∫ 1/x dx = <code>ln|x| + C</code></p>
-        <p>∫ e^x dx = <code>e^x + C</code></p>
-        <p>∫ sin(x) dx = <code>-cos(x) + C</code></p>
-        <p>∫ cos(x) dx = <code>sin(x) + C</code></p>
-    </div>
+    <div class="container">
+        <header>
+            <a href="index.html" class="back-link">← 返回计算器</a>
+            <h1>考研数学核心公式库</h1>
+            <p class="intro-text">
+                专为<strong>考研数学一、二、三</strong>考生打造的极简速查表。本页收录了<strong>同济高数</strong>中最高频的<strong>等价无穷小、泰勒展开公式、各类积分表</strong>及易错点总结。
+            </p>
+        </header>
 
-    <div class="card">
-        <h3>2. 常用导数</h3>
-        <p>(C)' = 0</p>
-        <p>(x^n)' = n*x^(n-1)</p>
-        <p>(sin x)' = cos x</p>
-        <p>(cos x)' = sin x</p>
-        <p>(ln x)' = 1/x</p>
+        <div class="grid">
+            <div class="card">
+                <h3>1. 常用等价无穷小 (x→0)</h3>
+                <div class="formula-row"><span class="f-desc">sin x</span> <span class="f-code">~ x</span></div>
+                <div class="formula-row"><span class="f-desc">tan x</span> <span class="f-code">~ x</span></div>
+                <div class="formula-row"><span class="f-desc">arcsin x</span> <span class="f-code">~ x</span></div>
+                <div class="formula-row"><span class="f-desc">ln(1+x)</span> <span class="f-code">~ x</span></div>
+                <div class="formula-row"><span class="f-desc">e<sup>x</sup> - 1</span> <span class="f-code">~ x</span></div>
+                <div class="formula-row"><span class="f-desc">1 - cos x</span> <span class="f-code">~ x<sup>2</sup>/2</span></div>
+                <div class="formula-row"><span class="f-desc">(1+x)<sup>α</sup> - 1</span> <span class="f-code">~ αx</span></div>
+                <div class="formula-row"><span class="f-desc">a<sup>x</sup> - 1</span> <span class="f-code">~ x·ln a</span></div>
+            </div>
+
+            <div class="card">
+                <h3>2. 必背泰勒公式 (x→0)</h3>
+                <div class="formula-row"><span class="f-desc">sin x</span> <span class="f-code">x - x<sup>3</sup>/3! + o(x<sup>3</sup>)</span></div>
+                <div class="formula-row"><span class="f-desc">cos x</span> <span class="f-code">1 - x<sup>2</sup>/2! + x<sup>4</sup>/4!</span></div>
+                <div class="formula-row"><span class="f-desc">e<sup>x</sup></span> <span class="f-code">1 + x + x<sup>2</sup>/2! + ...</span></div>
+                <div class="formula-row"><span class="f-desc">ln(1+x)</span> <span class="f-code">x - x<sup>2</sup>/2 + x<sup>3</sup>/3</span></div>
+                <div class="formula-row"><span class="f-desc">1/(1-x)</span> <span class="f-code">1 + x + x<sup>2</sup> + x<sup>3</sup>...</span></div>
+                <div class="formula-row"><span class="f-desc">(1+x)<sup>α</sup></span> <span class="f-code">1 + αx + α(α-1)x<sup>2</sup>/2!</span></div>
+            </div>
+
+            <div class="card">
+                <h3>3. 核心求导公式</h3>
+                <div class="formula-row"><span class="f-desc">(x<sup>μ</sup>)'</span> <span class="f-code">μx<sup>μ-1</sup></span></div>
+                <div class="formula-row"><span class="f-desc">(ln x)'</span> <span class="f-code">1/x</span></div>
+                <div class="formula-row"><span class="f-desc">(a<sup>x</sup>)'</span> <span class="f-code">a<sup>x</sup>ln a</span></div>
+                <div class="formula-row"><span class="f-desc">(sec x)'</span> <span class="f-code">sec x·tan x</span></div>
+                <div class="formula-row"><span class="f-desc">(csc x)'</span> <span class="f-code">-csc x·cot x</span></div>
+                <div class="formula-row"><span class="f-desc">(arcsin x)'</span> <span class="f-code">1/√(1-x<sup>2</sup>)</span></div>
+                <div class="formula-row"><span class="f-desc">(arctan x)'</span> <span class="f-code">1/(1+x<sup>2</sup>)</span></div>
+            </div>
+
+            <div class="card">
+                <h3>4. 常用不定积分</h3>
+                <div class="formula-row"><span class="f-desc">∫ tan x dx</span> <span class="f-code">-ln|cos x| + C</span></div>
+                <div class="formula-row"><span class="f-desc">∫ cot x dx</span> <span class="f-code">ln|sin x| + C</span></div>
+                <div class="formula-row"><span class="f-desc">∫ sec<sup>2</sup>x dx</span> <span class="f-code">tan x + C</span></div>
+                <div class="formula-row"><span class="f-desc">∫ 1/(a<sup>2</sup>+x<sup>2</sup>)</span> <span class="f-code">(1/a)arctan(x/a)</span></div>
+                <div class="formula-row"><span class="f-desc">∫ 1/√(a<sup>2</sup>-x<sup>2</sup>)</span> <span class="f-code">arcsin(x/a)</span></div>
+                <div class="formula-row"><span class="f-desc">∫ 1/√(x<sup>2</sup>±a<sup>2</sup>)</span> <span class="f-code">ln|x+√(x<sup>2</sup>±a<sup>2</sup>)|</span></div>
+            </div>
+
+            <div class="card">
+                <h3>5. 必备三角变换</h3>
+                <div class="formula-row"><span class="f-desc">sin<sup>2</sup>x + cos<sup>2</sup>x</span> <span class="f-code">1</span></div>
+                <div class="formula-row"><span class="f-desc">1 + tan<sup>2</sup>x</span> <span class="f-code">sec<sup>2</sup>x</span></div>
+                <div class="formula-row"><span class="f-desc">sin 2x</span> <span class="f-code">2sin x cos x</span></div>
+                <div class="formula-row"><span class="f-desc">cos 2x</span> <span class="f-code">2cos<sup>2</sup>x - 1</span></div>
+                <div class="formula-row"><span class="f-desc">降幂 sin<sup>2</sup>x</span> <span class="f-code">(1-cos 2x)/2</span></div>
+                <div class="formula-row"><span class="f-desc">降幂 cos<sup>2</sup>x</span> <span class="f-code">(1+cos 2x)/2</span></div>
+            </div>
+
+            <div class="card" style="border-color: #d63031;">
+                <h3 style="border-color: #d63031;">⚠️ 高数易错点总结</h3>
+                <div class="formula-row">
+                    <span class="f-desc">不定积分</span> 
+                    <span class="f-code" style="color:#d63031;">千万别忘了 + C</span>
+                </div>
+                <div class="formula-row">
+                    <span class="f-desc">定积分换元</span> 
+                    <span class="f-code" style="color:#d63031;">上下限必须跟着换</span>
+                </div>
+                <div class="formula-row">
+                    <span class="f-desc">洛必达法则</span> 
+                    <span class="f-code" style="color:#d63031;">必须是 0/0 或 ∞/∞</span>
+                </div>
+                <div class="formula-row">
+                    <span class="f-desc">奇函数对称区间</span> 
+                    <span class="f-code" style="color:#d63031;">积分结果直接为 0</span>
+                </div>
+                <div class="formula-row">
+                    <span class="f-desc">拐点</span> 
+                    <span class="f-code" style="color:#d63031;">是点(x,y)，不是横坐标</span>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <a href="privacy.html">隐私政策</a>
+            <br><br>
+            &copy; 2024 极简高数 | 仅供学习参考
+        </footer>
     </div>
-    
-    <div class="card">
-        <h3>3. 泰勒公式 (Maclaurin)</h3>
-        <p>e^x = 1 + x + x^2/2! + ... + x^n/n!</p>
-        <p>sin x = x - x^3/3! + x^5/5! - ...</p>
-        <p>cos x = 1 - x^2/2! + x^4/4! - ...</p>
-    </div>
-</body>
-</html>
+</body
