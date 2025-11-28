@@ -3,16 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>极简高数 | 考研数学可视化神器</title>
-    <meta name="description" content="免费的定积分在线计算器，支持函数图像绘制与面积可视化，考研数学一二三辅助工具。">
-    
+    <title>定积分在线计算器 (带图解) - 考研数学可视化神器 | 极简高数</title>
+    <meta name="description" content="无需下载App！免费的定积分在线计算器。支持保留根号、Pi、ln等精确结果，输入函数即刻生成几何面积图，考研数学一二三复习必备工具。">
     <script src="https://unpkg.com/d3@3/d3.min.js"></script>
     <script src="https://unpkg.com/function-plot@1/dist/function-plot.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.js"></script>
-
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2929620643066807"
-     crossorigin="anonymous"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/nerdamer@1.1.13/nerdamer.core.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/nerdamer@1.1.13/Algebra.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/nerdamer@1.1.13/Calculus.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/nerdamer@1.1.13/Solve.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2929620643066807" crossorigin="anonymous"></script>
     <style>
         :root {
             --bg-color: #121212;
@@ -118,26 +119,17 @@
             border-left: 4px solid var(--accent-color);
             padding: 20px; margin-top: 10px; border-radius: 4px;
             display: flex; justify-content: space-between; align-items: center;
+            min-height: 80px;
         }
-        .result-value { font-size: 28px; font-weight: bold; font-family: monospace; }
+        .katex { font-size: 1.5em !important; }
         #graph { width: 100%; height: 450px; margin-top: 30px; background: #000; border-radius: 8px; overflow: hidden; }
         .function-plot text { fill: #888 !important; }
         .function-plot path.line { stroke-width: 2.5 !important; }
         .function-plot .domain { stroke: #444 !important; }
-        
-        /* 广告容器样式：限制最小高度，防止页面抖动 */
         .ad-banner {
-            margin: 30px 0; 
-            width: 100%; 
-            min-height: 100px; /* 确保有高度，即使广告没加载出来也不塌陷 */
-            background-color: #1a1a1a;
-            border: 1px dashed #333; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            overflow: hidden;
+            margin: 30px 0; width: 100%; min-height: 100px; background-color: #1a1a1a;
+            border: 1px dashed #333; display: flex; align-items: center; justify-content: center; overflow: hidden;
         }
-        
         .section-title {
             color: var(--text-main); font-size: 1.2em; font-weight: bold; margin-top: 20px; margin-bottom: 20px;
             width: 100%; max-width: 900px; text-align: left; border-bottom: 1px solid #333; padding-bottom: 10px;
@@ -164,6 +156,30 @@
         .footer-links { margin-top: auto; padding: 20px; text-align: center; }
         .footer-links a { color: #666; text-decoration: none; margin: 0 10px; font-size: 14px; }
         .footer-links a:hover { color: var(--accent-color); }
+        .btn-steps {
+            background-color: transparent;
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            text-decoration: none;
+        }
+        .btn-steps:hover {
+            background-color: var(--accent-color);
+            color: white;
+        }
+        .add-to-home {
+            background: #333; color: #fff; padding: 10px; font-size: 12px; text-align: center;
+            border-radius: 8px; margin-top: 20px; display: none;
+        }
+        @media (max-width: 600px) { .add-to-home { display: block; } }
     </style>
 </head>
 <body>
@@ -181,6 +197,12 @@
     </header>
 
     <div class="container">
+        <nav style="margin: 0 0 25px 0; font-size: 14px; text-align: center;">
+            <a href="index.html" style="color:#fff; margin:0 15px; text-decoration:none; font-weight:bold; border-bottom:2px solid #1DB954;">首页</a>
+            <a href="formulas.html" style="color:#888; margin:0 15px; text-decoration:none;">公式大全</a>
+            <a href="privacy.html" style="color:#888; margin:0 15px; text-decoration:none;">隐私政策</a>
+        </nav>
+
         <div class="quick-actions">
             <div class="chip" onclick="addText('sin(x)')">sin(x)</div>
             <div class="chip" onclick="addText('cos(x)')">cos(x)</div>
@@ -190,25 +212,35 @@
             <div class="chip" onclick="addText('ln(x)')">ln(x)</div>
             <div class="chip" onclick="addText('e^x')">e^x</div>
             <div class="chip" onclick="addText('1/x')">1/x</div>
+            <div class="chip" onclick="addText('pi')">π</div>
         </div>
         <div class="input-grid">
             <div class="control-group">
                 <label>被积函数 f(x)</label>
-                <input type="text" id="fn" value="ln(x)" oninput="updatePlot()" placeholder="例如: ln(x)">
+                <input type="text" id="fn" value="sqrt(x)" oninput="updatePlot()" placeholder="例如: sqrt(x) 或 ln(x)">
             </div>
             <div class="control-group">
                 <label>下限 (a)</label>
-                <input type="number" id="lower" value="2" step="0.5" oninput="updatePlot()">
+                <input type="text" id="lower" value="0" oninput="updatePlot()" placeholder="支持 pi, e">
             </div>
             <div class="control-group">
                 <label>上限 (b)</label>
-                <input type="number" id="upper" value="7" step="0.5" oninput="updatePlot()">
+                <input type="text" id="upper" value="4" oninput="updatePlot()" placeholder="支持 pi, e">
             </div>
         </div>
+
         <div class="result-box">
-            <span style="color:var(--accent-color); font-weight:bold;">计算结果</span>
-            <span class="result-value" id="area-val">Wait...</span>
+            <span style="color:var(--accent-color); font-weight:bold; font-size: 14px;">精确结果</span>
+            <span id="latex-result" style="color: white;">...</span>
         </div>
+
+        <div style="text-align: right;">
+            <a href="#" id="wolfram-link" target="_blank" class="btn-steps" onclick="openWolfram(event)">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+                看不懂？去 WolframAlpha 看详细推导步骤
+            </a>
+        </div>
+
         <div id="graph"></div>
 
         <div class="ad-banner">
@@ -221,6 +253,16 @@
              <script>
                  (adsbygoogle = window.adsbygoogle || []).push({});
              </script>
+        </div>
+
+        <div style="max-width: 900px; margin: 40px 0; text-align: left; color: #aaa; font-size: 14px; line-height: 1.8;">
+            <h2 style="color: #fff; font-size: 18px; border-bottom: 1px solid #333; padding-bottom: 10px;">关于定积分可视化计算器</h2>
+            <p><strong>极简高数 (JiJianMath)</strong> 是专为中国大学生打造的免费在线数学工具。不同于传统的科学计算器，本站专注于<strong>高等数学 (Calculus)</strong> 领域的几何意义可视化。通过动态绘制函数图像与黎曼和 (Riemann Sums) 区域，帮助考研数学一、二、三的考生直观理解定积分的本质。</p>
+            <h3 style="color: #1DB954; font-size: 16px; margin-top: 20px;">核心功能介绍</h3>
+            <ul style="padding-left: 20px;">
+                <li><strong>符号精确计算：</strong>采用 Nerdamer 符号引擎，支持保留 <strong>√ (根号)</strong>、<strong>π</strong>、<strong>e</strong>、<strong>ln</strong> 等精确数学常数，告别丑陋的近似小数。</li>
+                <li><strong>几何面积可视化：</strong>利用 D3.js 绘图引擎，实时生成函数曲线下的阴影面积。这是理解“二重积分交换积分次序”和“旋转体体积”的基础。</li>
+            </ul>
         </div>
     </div>
     
@@ -248,6 +290,11 @@
         </a>
     </div>
 
+    <div class="add-to-home">
+        💡 提示：在 Safari/Chrome 菜单点击 <strong>“添加到主屏幕”</strong><br>
+        即可像 App 一样离线秒开，复习更方便！
+    </div>
+
     <div class="footer-links">
         <a href="formulas.html">公式大全</a> | 
         <a href="privacy.html">隐私政策</a>
@@ -256,106 +303,97 @@
     </div>
     
     <script>
-        math.config({ number: 'number' });
-
+        nerdamer.set('SOLUTIONS_AS_OBJECT', true);
+        let timer = null;
         function addText(text) {
             const input = document.getElementById('fn');
             input.value = text;
             updatePlot();
         }
-
-        function calculateIntegral(expression, a, b) {
-            try {
-                const f = math.compile(expression);
-                try {
-                    f.evaluate({x: a});
-                    f.evaluate({x: b});
-                } catch (e) {
-                    return "定义域错误"; 
-                }
-
-                const n = 500;
-                const h = (b - a) / n;
-                let sum = f.evaluate({x: a}) + f.evaluate({x: b});
-                
-                for (let i = 1; i < n; i++) {
-                    const x = a + i * h;
-                    let val;
-                    try {
-                        val = f.evaluate({x: x});
-                    } catch(err) {
-                        return "定义域错误";
-                    }
-
-                    if (!isFinite(val) || isNaN(val)) {
-                        return "发散";
-                    }
-
-                    if (i % 2 === 0) {
-                        sum += 2 * val;
-                    } else {
-                        sum += 4 * val;
-                    }
-                }
-                
-                const result = (sum * h / 3);
-
-                if (!isFinite(result) || Math.abs(result) > 1e8) {
-                    return "发散";
-                }
-
-                return Math.abs(result) < 1e-10 ? "0" : result.toFixed(4);
-
-            } catch (e) {
-                if(e.message.includes("Undefined") || e.message.includes("Complex") || e.message.includes("Unexpected type")) {
-                    return "定义域错误";
-                }
-                return "公式有误";
-            }
-        }
-
         function updatePlot() {
-            const fnRaw = document.getElementById('fn').value;
-            const fn = fnRaw.toLowerCase().replace(/X/g, 'x').replace(/ln\(/g, 'log(');
-            const a = parseFloat(document.getElementById('lower').value);
-            const b = parseFloat(document.getElementById('upper').value);
-            const resBox = document.getElementById('area-val');
-
-            if (fn && !isNaN(a) && !isNaN(b)) {
-                const result = calculateIntegral(fn, a, b);
-                resBox.innerText = result;
+            const resBox = document.getElementById('latex-result');
+            resBox.style.opacity = "0.5";
+            resBox.innerText = "计算中...";
+            if(timer) clearTimeout(timer);
+            timer = setTimeout(() => {
+                const fnRaw = document.getElementById('fn').value;
+                let fn = fnRaw.toLowerCase().replace(/X/g, 'x');
                 
-                if (result === "发散" || result === "定义域错误" || result === "公式有误") {
-                    resBox.style.color = "var(--error-color)";
-                } else {
-                    resBox.style.color = "var(--text-main)";
+                const aRaw = document.getElementById('lower').value.toLowerCase().replace('pi', '3.1415926').replace('e', '2.71828');
+                const bRaw = document.getElementById('upper').value.toLowerCase().replace('pi', '3.1415926').replace('e', '2.71828');
+                
+                const aSym = document.getElementById('lower').value.toLowerCase();
+                const bSym = document.getElementById('upper').value.toLowerCase();
+                
+                let aVal = 0, bVal = 0;
+                try {
+                    aVal = parseFloat(eval(aRaw));
+                    bVal = parseFloat(eval(bRaw));
+                } catch(e) { }
+
+                if (fn && aSym && bSym) {
+                    try {
+                        const sol = nerdamer('integrate(' + fn + ', x)');
+                        const valB = sol.sub('x', '(' + bSym + ')');
+                        const valA = sol.sub('x', '(' + aSym + ')');
+                        const result = nerdamer(valB + '-(' + valA + ')');
+                        
+                        const resultStr = result.text();
+                        // 虚数/定义域错误检测正则 (匹配独立的 i)
+                        const complexRegex = /(^|[^a-z])i([^a-z]|$)/;
+                        if(complexRegex.test(resultStr)) {
+                             throw new Error("Complex");
+                        }
+
+                        const latex = result.toTeX();
+                        katex.render(latex, document.getElementById('latex-result'), {
+                            throwOnError: false
+                        });
+                        resBox.style.opacity = "1";
+                        resBox.style.color = "#fff";
+                    } catch (e) {
+                        if(e.message === "Complex") {
+                            document.getElementById('latex-result').innerText = "定义域错误";
+                        } else {
+                            document.getElementById('latex-result').innerText = "输入格式有误";
+                        }
+                        resBox.style.color = "#ff5555";
+                    }
                 }
-            }
-
-            try {
-                functionPlot({
-                    target: '#graph',
-                    width: 840,
-                    height: 450,
-                    xAxis: { domain: [a - 2, b + 2] },
-                    yAxis: { domain: [-5, 5] }, 
-                    grid: true,
-                    data: [{
-                        fn: fn,
-                        closed: true,
-                        range: [a, b], 
-                        color: '#1DB954',
-                        skipTip: true,
-                        graphType: 'polyline'
-                    }],
-                    annotations: [
-                        {x: a, text: 'a'},
-                        {x: b, text: 'b'}
-                    ]
-                });
-            } catch (err) {}
+                const plotFn = fn.replace(/ln\(/g, 'log(');
+                try {
+                    functionPlot({
+                        target: '#graph',
+                        width: 840,
+                        height: 450,
+                        xAxis: { domain: [aVal - 2, bVal + 2] },
+                        yAxis: { domain: [-5, 5] }, 
+                        grid: true,
+                        data: [{
+                            fn: plotFn,
+                            closed: true,
+                            range: [aVal, bVal], 
+                            color: '#1DB954',
+                            skipTip: true,
+                            graphType: 'polyline'
+                        }],
+                        annotations: [
+                            {x: aVal, text: 'a'},
+                            {x: bVal, text: 'b'}
+                        ]
+                    });
+                } catch (err) {}
+            }, 500);
         }
-
+        function openWolfram(e) {
+            e.preventDefault();
+            const fn = document.getElementById('fn').value;
+            const a = document.getElementById('lower').value;
+            const b = document.getElementById('upper').value;
+            const query = `integrate ${fn} from ${a} to ${b}`;
+            const url = `https://www.wolframalpha.com/input?i=${encodeURIComponent(query)}`;
+            window.open(url, '_blank');
+        }
         updatePlot();
         window.addEventListener('resize', updatePlot);
     </script>
